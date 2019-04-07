@@ -50,7 +50,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                     countdown -= Time.deltaTime;
                     if(countdown < 0)
                     {
-                        Debug.Log("Switch");
+                        
                         reached = false;
                         countdown = .1f;
                         if (target.Equals(target1))

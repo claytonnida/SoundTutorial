@@ -234,10 +234,12 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 if(hitInfo.transform.gameObject.name.Equals("DesFloor"))
                 {
                     footsteps.clip = Resources.Load<AudioClip>("running-gravel");
+                    footsteps.volume = 0.3f;
                 }
                 else
                 {
                     footsteps.clip = Resources.Load<AudioClip>("Running-4");
+                    footsteps.volume = 0.4f;
                 }
 			}
 			else
