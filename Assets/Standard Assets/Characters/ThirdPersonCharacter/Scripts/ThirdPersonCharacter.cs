@@ -155,7 +155,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			}
             if(m_IsGrounded)
             {
-                if (move.magnitude > .5)
+                if (move.magnitude >= .5)
                 {
                     if (!footsteps.isPlaying)
                         footsteps.Play();
@@ -217,29 +217,34 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 
-		void CheckGroundStatus()
-		{
-			RaycastHit hitInfo;
+        void CheckGroundStatus()
+        {
+            RaycastHit hitInfo;
 #if UNITY_EDITOR
-			// helper to visualise the ground check ray in the scene view
-			Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * m_GroundCheckDistance));
+            // helper to visualise the ground check ray in the scene view
+            Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * m_GroundCheckDistance));
 #endif
-			// 0.1f is a small offset to start the ray from inside the character
-			// it is also good to note that the transform position in the sample assets is at the base of the character
-			if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
-			{
-				m_GroundNormal = hitInfo.normal;
-				m_IsGrounded = true;
-				m_Animator.applyRootMotion = true;
-                if(hitInfo.transform.gameObject.name.Equals("DesFloor"))
+            // 0.1f is a small offset to start the ray from inside the character
+            // it is also good to note that the transform position in the sample assets is at the base of the character
+            if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+            {
+                m_GroundNormal = hitInfo.normal;
+                m_IsGrounded = true;
+                m_Animator.applyRootMotion = true;
+                if (hitInfo.transform.gameObject.name.Equals("DesFloor"))
                 {
                     footsteps.clip = Resources.Load<AudioClip>("running-gravel");
-                    footsteps.volume = 0.3f;
+                    footsteps.volume = 0.15f;
+                }
+                else if (hitInfo.transform.gameObject.name.Equals("wood_stairs") || hitInfo.transform.gameObject.name.StartsWith("platform"))
+                {
+                    footsteps.clip = Resources.Load<AudioClip>("house-steps");
+                    //footsteps.volume = 0.15f;
                 }
                 else
                 {
                     footsteps.clip = Resources.Load<AudioClip>("Running-4");
-                    footsteps.volume = 0.4f;
+                    footsteps.volume = 0.35f;
                 }
 			}
 			else
